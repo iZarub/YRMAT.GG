@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 Future<WolframSolution> getSolution(String cloudUri) async {
   final response = await http.get(Uri.parse(cloudUri));
 
+  print(jsonDecode(response.body));
+
   if (response.statusCode == 200) {
     return WolframSolution.fromJson(jsonDecode(response.body));
   } else {

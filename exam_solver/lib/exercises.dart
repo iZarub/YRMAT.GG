@@ -1,7 +1,7 @@
 import 'package:exam_solver/homepage.dart';
 import 'package:flutter/material.dart';
 import 'defaults/exwidgets.dart';
-import 'api.dart';
+import 'defaults/api.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -10,11 +10,10 @@ const Map exercisesMap = {
     'Theory':
         'В данной задаче находится причинная функция Грина при помощи уравнения на функцию Грина и преобразования Лапласа.',
     'Inputs': {
-      0: 'Введите оператор...',
-      1: 'Введите пределы...',
+      0: 'Введите оператор L[dt]...',
     },
     'WolframAPI':
-        'https://www.wolframcloud.com/obj/93215348-162e-4d04-8c07-f9810fccaaf1',
+        'https://www.wolframcloud.com/obj/0999eaae-79d7-41d3-b0e9-ee66c048a5c0',
   },
   'Уравнение Бюргерса': {
     'Theory': 'Чето про уравнение Бюргерса',
@@ -128,9 +127,6 @@ class ExercisePage extends StatefulWidget {
 }
 
 class _ExercisePage extends State<ExercisePage> {
-  bool _isAnswered = false;
-  String _answer = '';
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -152,43 +148,12 @@ class _ExercisePage extends State<ExercisePage> {
             theory: getTheoryByTitle(widget.title),
           ),
           const SectionText(text: 'Inputs'),
-          Column(
-            children: createInputFields(getInputsByTitle(widget.title)),
+          InputForm(
+            pholders: getInputsByTitle(widget.title),
+            wolframUri: getApiByTitle(widget.title),
           ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFEB8E8A), // background
-              foregroundColor: Colors.white, // foreground
-            ),
-            onPressed: () async {
-              var response = await getSolution(getApiByTitle(widget.title));
-              setState(() {
-                _isAnswered = true;
-                _answer = response.result;
-              });
-            },
-            child: const Text(
-              'Evaluate',
-              style: TextStyle(
-                fontSize: 20,
-              ),
-            ),
-          ),
-          const SectionText(text: "Answer"),
-          (_isAnswered
-              ? Answer(answer: _answer)
-              : const Text('Заполните поля и нажмите кнопку')),
         ],
       ),
     );
-  }
-
-  createInputFields(List placeHolders) {
-    var inputs = <InputLine>[];
-    for (String element in placeHolders) {
-      var line = InputLine(pholders: element);
-      inputs.add(line);
-    }
-    return inputs;
   }
 }
