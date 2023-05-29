@@ -32,10 +32,13 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
               ),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(100.0),
-                child: Image.asset(
-                  'images/preview.jpg',
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 100.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(100.0),
+                  child: Image.asset(
+                    'images/preview.jpg',
+                  ),
                 ),
               ),
             ],

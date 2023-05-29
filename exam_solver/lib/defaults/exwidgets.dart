@@ -13,8 +13,9 @@ class Theory extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(12.0),
         decoration: BoxDecoration(
-            color: ColorConstants.secondMainColor,
-            borderRadius: BorderRadius.circular(6.0),
+            color: const Color(0xFF231F2E),
+            borderRadius: BorderRadius.circular(5.0),
+            border: Border.all(color: ColorConstants.firstTextColor, width: 2),
             boxShadow: const [
               BoxShadow(
                 color: Colors.black,
@@ -25,7 +26,7 @@ class Theory extends StatelessWidget {
         child: Text(
           theory,
           style: const TextStyle(
-            color: Colors.grey,
+            color: Colors.white,
             fontSize: 16,
           ),
         ),
@@ -47,7 +48,8 @@ class Answer extends StatelessWidget {
         padding: const EdgeInsets.all(12.0),
         decoration: BoxDecoration(
             color: ColorConstants.secondMainColor,
-            borderRadius: BorderRadius.circular(6.0),
+            borderRadius: BorderRadius.circular(5.0),
+            border: Border.all(color: ColorConstants.secondTextColor, width: 2),
             boxShadow: const [
               BoxShadow(
                 color: Colors.black,
@@ -58,8 +60,8 @@ class Answer extends StatelessWidget {
         child: Text(
           answer,
           style: const TextStyle(
-            color: Colors.grey,
-            fontSize: 16,
+            color: Colors.white,
+            fontSize: 20,
           ),
         ),
       ),
@@ -67,10 +69,17 @@ class Answer extends StatelessWidget {
   }
 }
 
-class InputLine extends StatelessWidget {
-  const InputLine({super.key, required this.pholder});
+class InputLine extends StatefulWidget {
+  const InputLine({super.key, required this.pholders});
 
-  final String pholder;
+  final String pholders;
+
+  @override
+  State<InputLine> createState() => _InputLine();
+}
+
+class _InputLine extends State<InputLine> {
+  final myController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +88,7 @@ class InputLine extends StatelessWidget {
       child: TextField(
         decoration: InputDecoration(
           border: const OutlineInputBorder(),
-          hintText: pholder,
+          labelText: widget.pholders,
         ),
       ),
     );
@@ -144,17 +153,3 @@ class Solution extends StatelessWidget {
     );
   }
 }
-
-Widget evaluatebutton = ElevatedButton(
-  style: ElevatedButton.styleFrom(
-    backgroundColor: const Color(0xFFEB8E8A), // background
-    foregroundColor: Colors.white, // foreground
-  ),
-  onPressed: () {},
-  child: const Text(
-    'Evaluate',
-    style: TextStyle(
-      fontSize: 16,
-    ),
-  ),
-);

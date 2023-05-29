@@ -1,3 +1,4 @@
+import 'package:exam_solver/defaults/colors.dart';
 import 'package:flutter/material.dart';
 import 'homepage.dart';
 
@@ -13,6 +14,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: const Color(0xFF231F2E),
+        colorScheme: ThemeData()
+            .colorScheme
+            .copyWith(primary: ColorConstants.firstTextColor),
       ),
       debugShowCheckedModeBanner: false,
       home: const HomePage(),

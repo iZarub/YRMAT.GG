@@ -1,6 +1,9 @@
 import 'package:exam_solver/homepage.dart';
 import 'package:flutter/material.dart';
 import 'defaults/exwidgets.dart';
+import 'api.dart';
+
+import 'package:http/http.dart' as http;
 
 const Map exercisesMap = {
   'Причинная функция Грина': {
@@ -10,18 +13,40 @@ const Map exercisesMap = {
       0: 'Введите оператор...',
       1: 'Введите пределы...',
     },
-    'WolframAPI': {
-      'http://wolframcloud.com',
-    }
+    'WolframAPI':
+        'https://www.wolframcloud.com/obj/93215348-162e-4d04-8c07-f9810fccaaf1',
   },
   'Уравнение Бюргерса': {
     'Theory': 'Чето про уравнение Бюргерса',
     'Inputs': {
       0: 'Введите уравнение...',
     },
-    'WolframAPI': {
-      'http://wolframcloud.com',
-    }
+    'WolframAPI':
+        'https://www.wolframcloud.com/obj/0bf87975-aa04-4181-91cf-947daf9486e2',
+  },
+  'Задача Коши': {
+    'Theory': 'Чето про здачу Коши',
+    'Inputs': {0: 'Введите уравнение...', 1: 'Введите начальные условия...'},
+    'WolframAPI':
+        'https://www.wolframcloud.com/obj/0bf87975-aa04-4181-91cf-947daf9486e2',
+  },
+  'Задача Коши1': {
+    'Theory': 'Чето про здачу Коши',
+    'Inputs': {0: 'Введите уравнение...', 1: 'Введите начальные условия...'},
+    'WolframAPI':
+        'https://www.wolframcloud.com/obj/0bf87975-aa04-4181-91cf-947daf9486e2',
+  },
+  'Задача Коши2': {
+    'Theory': 'Чето про здачу Коши',
+    'Inputs': {0: 'Введите уравнение...', 1: 'Введите начальные условия...'},
+    'WolframAPI':
+        'https://www.wolframcloud.com/obj/0bf87975-aa04-4181-91cf-947daf9486e2',
+  },
+  'Задача Коши3': {
+    'Theory': 'Чето про здачу Коши',
+    'Inputs': {0: 'Введите уравнение...', 1: 'Введите начальные условия...'},
+    'WolframAPI':
+        'https://www.wolframcloud.com/obj/0bf87975-aa04-4181-91cf-947daf9486e2',
   },
 };
 
@@ -54,7 +79,10 @@ class MyNavigationDrawer extends StatelessWidget {
 
     exsTiles.add(
       ListTile(
-        leading: const Icon(Icons.home_filled),
+        leading: const Icon(
+          Icons.home_filled,
+          color: Colors.white,
+        ),
         //title: const Text('Home Page'),
         onTap: () {
           Navigator.of(context).push(
@@ -69,7 +97,10 @@ class MyNavigationDrawer extends StatelessWidget {
     for (String title in exercisesMap.keys.toList()) {
       exsTiles.add(
         ListTile(
-          leading: const Icon(exerciseIcon),
+          leading: const Icon(
+            exerciseIcon,
+            color: Colors.white,
+          ),
           title: Text(title),
           onTap: () {
             Navigator.of(context).push(
@@ -97,8 +128,8 @@ class ExercisePage extends StatefulWidget {
 }
 
 class _ExercisePage extends State<ExercisePage> {
-  final bool _isAnswered = false;
-  late String _answer;
+  bool _isAnswered = false;
+  String _answer = '';
 
   @override
   Widget build(BuildContext context) {
@@ -129,11 +160,17 @@ class _ExercisePage extends State<ExercisePage> {
               backgroundColor: const Color(0xFFEB8E8A), // background
               foregroundColor: Colors.white, // foreground
             ),
-            onPressed: () {},
+            onPressed: () async {
+              var response = await getSolution(getApiByTitle(widget.title));
+              setState(() {
+                _isAnswered = true;
+                _answer = response.result;
+              });
+            },
             child: const Text(
               'Evaluate',
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 20,
               ),
             ),
           ),
@@ -149,7 +186,8 @@ class _ExercisePage extends State<ExercisePage> {
   createInputFields(List placeHolders) {
     var inputs = <InputLine>[];
     for (String element in placeHolders) {
-      inputs.add(InputLine(pholder: element));
+      var line = InputLine(pholders: element);
+      inputs.add(line);
     }
     return inputs;
   }
